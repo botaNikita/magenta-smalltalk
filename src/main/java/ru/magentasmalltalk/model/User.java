@@ -1,7 +1,8 @@
 package ru.magentasmalltalk.model;
 
-
 import javax.persistence.*;
+import java.util.Calendar;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -13,12 +14,19 @@ public class User {
     @Column
     private String login;
 
-    public User() {
-    }
+    @Column
+    private String password;
 
-    public User(String login) {
-        this.login = login;
-    }
+    @Column
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private UserRoles role;
+
+    @OneToMany
+    private List<Reservation> reservations;
+
+    public User() { }
 
     public int getId() {
         return id;
@@ -34,5 +42,37 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public UserRoles getRole() {
+        return role;
+    }
+
+    public void setRole(UserRoles role) {
+        this.role = role;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }
