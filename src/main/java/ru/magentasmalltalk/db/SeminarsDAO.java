@@ -14,10 +14,10 @@ public class SeminarsDAO extends BaseDAO<Seminar> {
         super(manager);
     }
 
-    public Seminar createSeminar(Calendar date, String thema, String description, String place) {
+    public Seminar createSeminar(Calendar date, String topic, String description, String place) {
         Seminar seminar = new Seminar();
         seminar.setDate(date);
-        seminar.setThema(thema);
+        seminar.setTopic(topic);
         seminar.setDescription(description);
         seminar.setPlace(place);
         return persist(seminar);
@@ -31,7 +31,7 @@ public class SeminarsDAO extends BaseDAO<Seminar> {
         Objects.requireNonNull(seminar, "Seminar with id=\"" + id + "\" wasn't found");
 
         seminar.setDate(newSeminar.getDate());
-        seminar.setThema(newSeminar.getThema());
+        seminar.setTopic(newSeminar.getTopic());
         seminar.setDescription(newSeminar.getDescription());
         seminar.setPlace(newSeminar.getPlace());
 

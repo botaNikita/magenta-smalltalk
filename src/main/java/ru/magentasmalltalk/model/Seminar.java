@@ -15,7 +15,7 @@ public class Seminar {
     private Calendar date;
 
     @Column
-    private String thema;
+    private String topic;
 
     @Column
     private String description;
@@ -45,12 +45,12 @@ public class Seminar {
         this.date = date;
     }
 
-    public String getThema() {
-        return thema;
+    public String getTopic() {
+        return topic;
     }
 
-    public void setThema(String thema) {
-        this.thema = thema;
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public String getDescription() {
