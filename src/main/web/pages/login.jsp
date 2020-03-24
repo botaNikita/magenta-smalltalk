@@ -19,5 +19,6 @@
         </p>
         <input type="submit" value="Login" />
     </form>
+    <a href="register" >Register</a>
 </body>
 </html>

@@ -86,12 +86,12 @@ public class ReservationsDAOTest {
         // check
         Reservation removed = manager.find(Reservation.class, reservation.getId());
         assertNotNull(removed);
+        manager.refresh(removed);
         assertNotNull(removed.getUser());
         assertEquals(user.getId(), removed.getUser().getId());
         assertNotNull(removed.getSeminar());
         assertEquals(seminar.getId(), removed.getSeminar().getId());
         assertEquals(ReservationStatus.REMOVED, removed.getStatus());
-        manager.refresh(removed);
     }
 
     @Test

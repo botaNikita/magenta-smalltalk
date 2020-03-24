@@ -7,8 +7,9 @@
   </head>
   <body>
   <c:choose>
-    <c:when test="${not empty sessionScope['login']}">
-      <h1>Hello, ${sessionScope['login']}</h1>
+    <c:when test="${not empty sessionScope['userId']}">
+      <h1>Hello, ${sessionScope['userName']}</h1>
+      <a href="logout">Logout</a>
     </c:when>
     <c:otherwise>
       <a href="login">Login</a>

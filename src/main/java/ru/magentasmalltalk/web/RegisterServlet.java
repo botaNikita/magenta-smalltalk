@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = { "/login" })
-public class LoginServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/register" })
+public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getSession().getAttribute("userId") != null) {
@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        req.getRequestDispatcher("/pages/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/pages/register.jsp").forward(req, resp);
     }
 
     @Override
@@ -33,30 +33,29 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
+        String name = req.getParameter("name");
+        String role = req.getParameter("role");
+
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("TestPersistenceUnit");
         EntityManager manager = factory.createEntityManager();
         UsersDAO usersDAO = new UsersDAO(manager);
 
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
-
         if (login != null && password != null) {
-            User user = usersDAO.findUserByLogin(login);
+            User user = usersDAO.createUser(login, password, name, UserRoles.valueOf(role));
             if (user == null) {
-                resp.sendRedirect("login");
+                resp.sendRedirect("register");
                 return;
             }
-            if (password.compareTo(user.getPassword()) != 0) {
-                resp.sendRedirect("login");
-                return;
-            }
-
             req.getSession().setAttribute("userName", user.getName());
             req.getSession().setAttribute("userId", user.getId());
             req.getSession().setAttribute("isAdmin", user.getRole() == UserRoles.ADMIN);
             resp.sendRedirect(req.getContextPath());
         } else {
-            resp.sendRedirect("login");
+            resp.sendRedirect("register");
         }
     }
 }
+
+
