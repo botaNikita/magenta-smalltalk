@@ -3,6 +3,7 @@ package ru.magentasmalltalk.web;
 import ru.magentasmalltalk.db.UsersDAO;
 import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.model.UserRoles;
+import ru.magentasmalltalk.web.viewmodels.RegistrationFormViewModel;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 @WebServlet(urlPatterns = { "/register" })
 public class RegisterServlet extends HttpServlet {
@@ -22,6 +25,18 @@ public class RegisterServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath());
             return;
         }
+
+        RegistrationFormViewModel registrationFormViewModel = new RegistrationFormViewModel();
+        registrationFormViewModel.setLogin("");
+        registrationFormViewModel.setPassword("");
+        registrationFormViewModel.setName("");
+        List<UserRoles> userRoles = new LinkedList<>();
+        userRoles.add(UserRoles.ADMIN);
+        userRoles.add(UserRoles.USER);
+        registrationFormViewModel.setUserRoles(userRoles);
+        registrationFormViewModel.setSelectedUserRole(UserRoles.USER);
+
+        req.setAttribute("form", registrationFormViewModel);
 
         req.getRequestDispatcher("/pages/users/register.jsp").forward(req, resp);
     }
@@ -38,12 +53,18 @@ public class RegisterServlet extends HttpServlet {
         String name = req.getParameter("name");
         String role = req.getParameter("role");
 
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("TestPersistenceUnit");
-        EntityManager manager = factory.createEntityManager();
-        UsersDAO usersDAO = new UsersDAO(manager);
-
         if (login != null && password != null) {
-            User user = usersDAO.createUser(login, password, name, UserRoles.valueOf(role));
+
+            EntityManager manager = PersistenceUtils.createManager(req.getServletContext());
+            User user;
+
+            try {
+                UsersDAO usersDAO = new UsersDAO(manager);
+                user = usersDAO.createUser(login, password, name, UserRoles.valueOf(role));
+            } finally {
+                manager.close();
+            }
+
             if (user == null) {
                 resp.sendRedirect("register");
                 return;
