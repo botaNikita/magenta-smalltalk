@@ -23,11 +23,11 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        req.getRequestDispatcher("/pages/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/pages/users/login.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if (req.getSession().getAttribute("userId") != null) {
             resp.sendRedirect(req.getContextPath());
             return;

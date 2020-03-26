@@ -23,11 +23,11 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        req.getRequestDispatcher("/pages/register.jsp").forward(req, resp);
+        req.getRequestDispatcher("/pages/users/register.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if (req.getSession().getAttribute("userId") != null) {
             resp.sendRedirect(req.getContextPath());
             return;
