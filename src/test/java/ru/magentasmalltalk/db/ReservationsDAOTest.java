@@ -39,6 +39,7 @@ public class ReservationsDAOTest {
         // data preparation
         User user = new User();
         user.setLogin("test login");
+        user.setPassword("test password");
         Seminar seminar = new Seminar();
         seminar.setTopic("test topic");
         manager.getTransaction().begin();
@@ -68,6 +69,7 @@ public class ReservationsDAOTest {
         // const
         User user = new User();
         user.setLogin("test login 2");
+        user.setPassword("test password 2");
         Seminar seminar = new Seminar();
         seminar.setTopic("test topic 2");
         Reservation reservation = new Reservation();
@@ -99,6 +101,7 @@ public class ReservationsDAOTest {
         // data preparation
         User user = new User();
         user.setLogin("test login 3");
+        user.setPassword("test password 3");
         Seminar seminar = new Seminar();
         seminar.setTopic("test topic 3");
         Reservation reservation = new Reservation();

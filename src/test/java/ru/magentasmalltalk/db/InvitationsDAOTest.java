@@ -45,8 +45,10 @@ public class InvitationsDAOTest {
         String TEXT = "text1";
         User user1 = new User();
         user1.setLogin("login1");
+        user1.setPassword("password1");
         User user2 = new User();
         user2.setLogin("login2");
+        user2.setPassword("password2");
         Seminar seminar = new Seminar();
         seminar.setTopic("topic");
         manager.getTransaction().begin();
@@ -56,7 +58,7 @@ public class InvitationsDAOTest {
         manager.getTransaction().commit();
 
         // check properties of returned object
-        List<User> users = new LinkedList();
+        LinkedList<User> users = new LinkedList();
         users.add(user1);
         users.add(user2);
         Invitation invitation = invitationsDAO.sendInvitation(seminar, TEXT, users);
@@ -85,15 +87,18 @@ public class InvitationsDAOTest {
 
         User user1 = new User();
         user1.setLogin("login1");
+        user1.setPassword("password1");
         User user2 = new User();
         user2.setLogin("login2");
+        user2.setPassword("password2");
         User user3 = new User();
         user3.setLogin("login3");
+        user3.setPassword("password3");
 
-        List<User> users1 = new LinkedList();
+        LinkedList<User> users1 = new LinkedList();
         users1.add(user1);
         users1.add(user2);
-        List<User> users2 = new LinkedList();
+        LinkedList<User> users2 = new LinkedList();
         users2.add(user1);
         users2.add(user3);
 
@@ -138,15 +143,18 @@ public class InvitationsDAOTest {
 
         User user1 = new User();
         user1.setLogin("login1");
+        user1.setPassword("password1");
         User user2 = new User();
         user2.setLogin("login2");
+        user2.setPassword("password2");
         User user3 = new User();
         user3.setLogin("login3");
+        user3.setPassword("password3");
 
-        List<User> users1 = new LinkedList();
+        LinkedList<User> users1 = new LinkedList();
         users1.add(user1);
         users1.add(user2);
-        List<User> users2 = new LinkedList();
+        LinkedList<User> users2 = new LinkedList();
         users2.add(user1);
         users2.add(user3);
 

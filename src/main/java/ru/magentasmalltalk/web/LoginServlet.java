@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet {
                 resp.sendRedirect("login");
                 return;
             }
-            if (password.compareTo(user.getPassword()) != 0) {
+            if (password.equals(user.getPassword())) {
                 resp.sendRedirect("login");
                 return;
             }

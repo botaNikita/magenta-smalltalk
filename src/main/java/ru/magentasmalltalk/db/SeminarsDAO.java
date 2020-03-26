@@ -5,7 +5,7 @@ import ru.magentasmalltalk.model.Seminar;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class SeminarsDAO extends BaseDAO<Seminar> {
@@ -14,7 +14,7 @@ public class SeminarsDAO extends BaseDAO<Seminar> {
         super(manager);
     }
 
-    public Seminar createSeminar(Calendar date, String topic, String description, String place) {
+    public Seminar createSeminar(Date date, String topic, String description, String place) {
         Seminar seminar = new Seminar();
         seminar.setDate(date);
         seminar.setTopic(topic);

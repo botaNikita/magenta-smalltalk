@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -38,8 +39,7 @@ public class SeminarsDAOTest {
     @Test
     public void createSeminar() {
         // const
-        Calendar DATE = Calendar.getInstance();
-        DATE.set(2020, Calendar.MAY, 25);
+        Date DATE = new Date(2020, Calendar.MAY, 15);
         String TOPIC = "topic1";
         String DESCRIPTION = "description1";
         String PLACE = "place1";
@@ -62,14 +62,12 @@ public class SeminarsDAOTest {
     @Test
     public void updateSeminar() {
         // const
-        Calendar DATE = Calendar.getInstance();
-        DATE.set(2020, Calendar.JUNE, 10);
+        Date DATE = new Date(2020, Calendar.JUNE, 10);
         String TOPIC = "topic2";
         String DESCRIPTION = "description2";
         String PLACE = "place2";
 
-        Calendar NEW_DATE = Calendar.getInstance();
-        NEW_DATE.set(2020, Calendar.JULY, 15);
+        Date NEW_DATE = new Date(2020, Calendar.JULY, 15);
         String NEW_TOPIC = "topic3";
         String NEW_DESCRIPTION = "description3";
         String NEW_PLACE = "place3";
@@ -102,8 +100,7 @@ public class SeminarsDAOTest {
     @Test
     public void findSeminarById() {
         // const
-        Calendar DATE = Calendar.getInstance();
-        DATE.set(2020, Calendar.DECEMBER, 30);
+        Date DATE = new Date(2020, Calendar.DECEMBER, 30);
         String TOPIC = "topic4";
         String DESCRIPTION = "description4";
         String PLACE = "place4";

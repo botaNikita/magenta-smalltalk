@@ -4,6 +4,7 @@ import ru.magentasmalltalk.model.Message;
 import ru.magentasmalltalk.model.User;
 
 import javax.persistence.EntityManager;
+import java.util.Date;
 import java.util.List;
 
 public class MessagesDAO extends BaseDAO<Message> {
@@ -15,6 +16,7 @@ public class MessagesDAO extends BaseDAO<Message> {
         Message message = new Message();
         message.setText(text);
         message.setUsers(users);
+        message.setDate(new Date());
         return persist(message);
     }
 

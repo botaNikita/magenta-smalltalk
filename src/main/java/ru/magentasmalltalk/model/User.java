@@ -11,10 +11,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String login;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
     @Column

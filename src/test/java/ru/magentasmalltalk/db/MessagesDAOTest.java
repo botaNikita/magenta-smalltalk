@@ -42,15 +42,17 @@ public class MessagesDAOTest {
         String TEXT = "text1";
         User user1 = new User();
         user1.setLogin("login1");
+        user1.setPassword("password1");
         User user2 = new User();
         user2.setLogin("login2");
+        user2.setPassword("password2");
         manager.getTransaction().begin();
         manager.persist(user1);
         manager.persist(user2);
         manager.getTransaction().commit();
 
         // check properties of returned object
-        List<User> users = new LinkedList();
+        LinkedList<User> users = new LinkedList();
         users.add(user1);
         users.add(user2);
         Message message = messagesDAO.sendMessage(TEXT, users);
@@ -63,6 +65,7 @@ public class MessagesDAOTest {
         assertNotNull(message.getUsers().get(1));
         assertEquals(user2.getId(), message.getUsers().get(1).getId());
         assertNotEquals(0, message.getId());
+        assertNotNull(message.getDate());
 
         // check that the entity is saved in DB
         Message found = manager.find(Message.class, message.getId());
@@ -77,15 +80,18 @@ public class MessagesDAOTest {
 
         User user1 = new User();
         user1.setLogin("login1");
+        user1.setPassword("password1");
         User user2 = new User();
         user2.setLogin("login2");
+        user2.setPassword("password2");
         User user3 = new User();
         user3.setLogin("login3");
+        user3.setPassword("password3");
 
-        List<User> users1 = new LinkedList();
+        LinkedList<User> users1 = new LinkedList();
         users1.add(user1);
         users1.add(user2);
-        List<User> users2 = new LinkedList();
+        LinkedList<User> users2 = new LinkedList();
         users2.add(user1);
         users2.add(user3);
 

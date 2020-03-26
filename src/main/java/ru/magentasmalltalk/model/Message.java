@@ -1,7 +1,7 @@
 package ru.magentasmalltalk.model;
 
 import javax.persistence.*;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -15,7 +15,8 @@ public class Message {
     private String text;
 
     @Column
-    private Calendar date;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
 
     @ManyToMany
     private List<User> users;
@@ -36,11 +37,11 @@ public class Message {
         this.text = text;
     }
 
-    public Calendar getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

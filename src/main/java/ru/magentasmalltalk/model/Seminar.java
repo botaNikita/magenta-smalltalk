@@ -2,6 +2,7 @@ package ru.magentasmalltalk.model;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,9 +13,10 @@ public class Seminar {
     private int id;
 
     @Column
-    private Calendar date;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
 
-    @Column
+    @Column(nullable = false)
     private String topic;
 
     @Column
@@ -37,11 +39,11 @@ public class Seminar {
         this.id = id;
     }
 
-    public Calendar getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
