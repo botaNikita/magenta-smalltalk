@@ -5,8 +5,6 @@ import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.model.UserRoles;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,28 +31,35 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("TestPersistenceUnit");
-        EntityManager manager = factory.createEntityManager();
-        UsersDAO usersDAO = new UsersDAO(manager);
-
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        if (login != null && password != null) {
-            User user = usersDAO.findUserByLogin(login);
-            if (user == null) {
-                resp.sendRedirect("login");
-                return;
-            }
-            if (password.equals(user.getPassword())) {
-                resp.sendRedirect("login");
-                return;
-            }
+        if (login != null) {
+            if (password != null) {
 
-            req.getSession().setAttribute("userName", user.getName());
-            req.getSession().setAttribute("userId", user.getId());
-            req.getSession().setAttribute("isAdmin", user.getRole() == UserRoles.ADMIN);
-            resp.sendRedirect(req.getContextPath());
+                EntityManager manager = PersistenceUtils.createManager(req.getServletContext());
+                User user;
+
+                try {
+                    UsersDAO usersDAO = new UsersDAO(manager);
+                    user = usersDAO.findUserByLogin(login);
+                } finally {
+                    manager.close();
+                }
+
+                if (user == null || !password.equals(user.getPassword())) {
+                    resp.sendRedirect("login?login=" + login);
+                    return;
+                }
+
+                req.getSession().setAttribute("userName", user.getName());
+                req.getSession().setAttribute("userId", user.getId());
+                req.getSession().setAttribute("isAdmin", user.getRole() == UserRoles.ADMIN);
+                resp.sendRedirect(req.getContextPath());
+
+            } else {
+                resp.sendRedirect("login?login=" + login);
+            }
         } else {
             resp.sendRedirect("login");
         }
