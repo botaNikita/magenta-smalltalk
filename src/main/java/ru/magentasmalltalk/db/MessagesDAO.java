@@ -1,5 +1,6 @@
 package ru.magentasmalltalk.db;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.magentasmalltalk.model.Message;
 import ru.magentasmalltalk.model.User;
 
@@ -8,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 public class MessagesDAO extends BaseDAO<Message> {
+
+    @Autowired
     public MessagesDAO(EntityManager manager) {
         super(manager);
     }

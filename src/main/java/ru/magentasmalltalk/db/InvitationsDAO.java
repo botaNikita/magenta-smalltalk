@@ -1,5 +1,6 @@
 package ru.magentasmalltalk.db;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.magentasmalltalk.model.Invitation;
 import ru.magentasmalltalk.model.Seminar;
 import ru.magentasmalltalk.model.User;
@@ -8,6 +9,8 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 public class InvitationsDAO extends BaseDAO<Invitation> {
+
+    @Autowired
     protected InvitationsDAO(EntityManager manager) {
         super(manager);
     }

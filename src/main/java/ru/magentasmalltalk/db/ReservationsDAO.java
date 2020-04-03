@@ -1,6 +1,7 @@
 package ru.magentasmalltalk.db;
 
 import com.sun.istack.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.magentasmalltalk.model.Reservation;
 import ru.magentasmalltalk.model.ReservationStatus;
 import ru.magentasmalltalk.model.Seminar;
@@ -11,6 +12,7 @@ import javax.persistence.NoResultException;
 
 public class ReservationsDAO extends BaseDAO<Reservation> {
 
+    @Autowired
     public ReservationsDAO(EntityManager manager) {
         super(manager);
     }

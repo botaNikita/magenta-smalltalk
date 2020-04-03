@@ -1,6 +1,7 @@
 package ru.magentasmalltalk.db;
 
 import com.sun.istack.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.magentasmalltalk.model.Seminar;
 
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 public class SeminarsDAO extends BaseDAO<Seminar> {
 
+    @Autowired
     public SeminarsDAO(EntityManager manager) {
         super(manager);
     }

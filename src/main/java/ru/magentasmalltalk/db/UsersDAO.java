@@ -1,6 +1,9 @@
 package ru.magentasmalltalk.db;
 
 import com.sun.istack.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.model.UserRoles;
 
@@ -8,8 +11,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.Objects;
 
+@Repository
 public class UsersDAO extends BaseDAO<User> {
 
+    @Autowired
     public UsersDAO(EntityManager manager) {
         super(manager);
     }
