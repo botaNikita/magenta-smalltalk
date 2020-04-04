@@ -21,7 +21,7 @@ public class SeminarsDAO extends BaseDAO<Seminar> {
         seminar.setDate(date);
         seminar.setTopic(topic);
         seminar.setDescription(description);
-        seminar.setPlace(place);
+        seminar.setAuditory(place);
         return persist(seminar);
     }
 
@@ -35,7 +35,7 @@ public class SeminarsDAO extends BaseDAO<Seminar> {
         seminar.setDate(newSeminar.getDate());
         seminar.setTopic(newSeminar.getTopic());
         seminar.setDescription(newSeminar.getDescription());
-        seminar.setPlace(newSeminar.getPlace());
+        seminar.setAuditory(newSeminar.getAuditory());
 
         return persist(seminar);
     }

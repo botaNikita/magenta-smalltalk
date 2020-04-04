@@ -50,7 +50,7 @@ public class SeminarsDAOTest {
         assertEquals(DATE, seminar.getDate());
         assertEquals(TOPIC, seminar.getTopic());
         assertEquals(DESCRIPTION, seminar.getDescription());
-        assertEquals(PLACE, seminar.getPlace());
+        assertEquals(PLACE, seminar.getAuditory());
         assertNotEquals(0, seminar.getId());
 
         // check that the entity is saved in DB
@@ -77,7 +77,7 @@ public class SeminarsDAOTest {
         seminar.setDate(DATE);
         seminar.setTopic(TOPIC);
         seminar.setDescription(DESCRIPTION);
-        seminar.setPlace(PLACE);
+        seminar.setAuditory(PLACE);
         manager.getTransaction().begin();
         manager.persist(seminar);
         manager.getTransaction().commit();
@@ -85,7 +85,7 @@ public class SeminarsDAOTest {
         seminar.setDate(NEW_DATE);
         seminar.setTopic(NEW_TOPIC);
         seminar.setDescription(NEW_DESCRIPTION);
-        seminar.setPlace(NEW_PLACE);
+        seminar.setAuditory(NEW_PLACE);
 
         // check
         Seminar updated = seminarsDAO.updateSeminar(seminar);
@@ -94,7 +94,7 @@ public class SeminarsDAOTest {
         assertEquals(NEW_DATE, updated.getDate());
         assertEquals(NEW_TOPIC, updated.getTopic());
         assertEquals(NEW_DESCRIPTION, updated.getDescription());
-        assertEquals(NEW_PLACE, updated.getPlace());
+        assertEquals(NEW_PLACE, updated.getAuditory());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class SeminarsDAOTest {
         seminar.setDate(DATE);
         seminar.setTopic(TOPIC);
         seminar.setDescription(DESCRIPTION);
-        seminar.setPlace(PLACE);
+        seminar.setAuditory(PLACE);
         manager.getTransaction().begin();
         manager.persist(seminar);
         manager.getTransaction().commit();
@@ -122,6 +122,6 @@ public class SeminarsDAOTest {
         assertEquals(DATE, found.getDate());
         assertEquals(TOPIC, found.getTopic());
         assertEquals(DESCRIPTION, found.getDescription());
-        assertEquals(PLACE, found.getPlace());
+        assertEquals(PLACE, found.getAuditory());
     }
 }

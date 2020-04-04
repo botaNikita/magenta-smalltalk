@@ -47,7 +47,6 @@ public class RegistrationControllerTest {
         registrationFormViewModel.setLogin("");
         registrationFormViewModel.setPassword("");
         registrationFormViewModel.setName("");
-        registrationFormViewModel.setUserRoles(Arrays.asList(UserRoles.ADMIN, UserRoles.USER));
         registrationFormViewModel.setSelectedUserRole(UserRoles.USER);
 
         mockMvc.perform(

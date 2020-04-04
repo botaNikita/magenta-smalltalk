@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.magentasmalltalk.db.UsersDAO;
+import ru.magentasmalltalk.db.UsersRepository;
 import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.model.UserRoles;
 
@@ -15,7 +16,8 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Autowired
-    private UsersDAO usersDAO;
+    private UsersRepository usersDAO;
+//    private UsersDAO usersDAO;
 
     @GetMapping("/login")
     public String loginPage(HttpSession session,
@@ -35,7 +37,8 @@ public class LoginController {
             return "redirect:/";
         }
 
-        User user = usersDAO.findUserByLogin(login);
+        User user = usersDAO.findByLogin(login);
+//        User user = usersDAO.findUserByLogin(login);
 
         if (user == null || !password.equals(user.getPassword())) {
             return "redirect:users/login";

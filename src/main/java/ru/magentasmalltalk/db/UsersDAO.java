@@ -1,44 +1,49 @@
 package ru.magentasmalltalk.db;
 
 import com.sun.istack.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.model.UserRoles;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.Objects;
 
 @Repository
-public class UsersDAO extends BaseDAO<User> {
+public class UsersDAO {
 
-    @Autowired
-    public UsersDAO(EntityManager manager) {
-        super(manager);
-    }
+    @PersistenceContext
+    protected EntityManager manager;
 
+    @Transactional
     public User createUser(String login, String password) {
         return createUser(login, password, login, UserRoles.USER);
     }
 
+    @Transactional
     public User createUser(String login, String password, String name, UserRoles role) {
         User user = new User();
         user.setLogin(login);
         user.setPassword(password);
         user.setName(name);
         user.setRole(role);
-        return persist(user);
+
+        manager.persist(user);
+
+        return user;
     }
 
+    @Transactional
     public User setUserName(int id, String newName){
         User user = findUserById(id);
         Objects.requireNonNull(user, "User with id=\"" + id + "\" wasn't found");
-
         user.setName(newName);
 
-        return persist(user);
+        manager.persist(user);
+
+        return user;
     }
 
     @Nullable

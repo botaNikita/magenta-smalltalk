@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.magentasmalltalk.db.UsersDAO;
 import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.model.UserRoles;
@@ -15,6 +16,7 @@ public class StartupListener {
     private UsersDAO usersDAO;
 
     @EventListener
+    @Transactional
     public void applicationStarted(ContextRefreshedEvent event) {
         User user = usersDAO.findUserByLogin("admin");
         if (user == null) {

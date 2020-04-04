@@ -5,7 +5,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "invitations")
+@Table
 public class Invitation extends Message {
     @ManyToOne
     private Seminar seminar;

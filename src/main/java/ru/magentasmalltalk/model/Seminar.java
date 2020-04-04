@@ -1,12 +1,15 @@
 package ru.magentasmalltalk.model;
 
 import javax.persistence.*;
-import java.util.Calendar;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "seminars")
+@Table
 public class Seminar {
     @Id
     @GeneratedValue
@@ -14,6 +17,7 @@ public class Seminar {
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
+    @FutureOrPresent
     private Date date;
 
     @Column(nullable = false)
@@ -23,7 +27,12 @@ public class Seminar {
     private String description;
 
     @Column
-    private String place;
+    private String auditory;
+
+    @Column
+    @Positive
+    @Max(9999)
+    private int placesNumber;
 
     @OneToMany
     private List<Reservation> reservations;
@@ -63,12 +72,12 @@ public class Seminar {
         this.description = description;
     }
 
-    public String getPlace() {
-        return place;
+    public String getAuditory() {
+        return auditory;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setAuditory(String auditory) {
+        this.auditory = auditory;
     }
 
     public List<Reservation> getReservations() {
@@ -85,5 +94,13 @@ public class Seminar {
 
     public void setInvitations(List<Invitation> invitations) {
         this.invitations = invitations;
+    }
+
+    public int getPlacesNumber() {
+        return placesNumber;
+    }
+
+    public void setPlacesNumber(int placesNumber) {
+        this.placesNumber = placesNumber;
     }
 }

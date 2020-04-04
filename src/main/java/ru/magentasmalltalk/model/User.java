@@ -1,20 +1,25 @@
 package ru.magentasmalltalk.model;
 
 import javax.persistence.*;
-import java.util.Calendar;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(unique = true, nullable = false)
+    @Size(min = 4, max = 50, message = "Login length should be between 4 and 50.")
+    @Pattern(regexp = "[a-zA-Z-_.0-9]*", message = "Login should consist of latin letters, digits, underscores, hyphens and dots.")
     private String login;
 
     @Column(nullable = false)
+    @Size(min = 6, message = "Password length should be minimum 6.")
+    @Pattern(regexp = "[a-zA-Z-_.0-9]*", message = "Password should consist of latin letters, digits, underscores, hyphens and dots.")
     private String password;
 
     @Column

@@ -2,39 +2,38 @@ package ru.magentasmalltalk.db;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.model.UserRoles;
+import ru.magentasmalltalk.tests.TestConfiguration;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfiguration.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UsersDAOTest {
-    private EntityManagerFactory factory;
-    private EntityManager manager;
+
+    @Autowired
     private UsersDAO usersDAO;
 
-    @Before
-    public void setUp() {
-        factory = Persistence.createEntityManagerFactory("TestPersistenceUnit");
-        manager = factory.createEntityManager();
-        usersDAO = new UsersDAO(manager);
-    }
-
-    @After
-    public void tearDown() {
-        if (manager != null) {
-            manager.close();
-        }
-        if (factory != null) {
-            factory.close();
-        }
-    }
+    @PersistenceContext
+    private EntityManager manager;
 
     @Test
+    @Transactional
     public void createUser() {
         // const
         String LOGIN = "login1";
@@ -56,6 +55,7 @@ public class UsersDAOTest {
     }
 
     @Test
+    @Transactional
     public void createUserFull() {
         // const
         String LOGIN = "login2";
@@ -78,6 +78,7 @@ public class UsersDAOTest {
     }
 
     @Test
+    @Transactional
     public void findUserById() {
         // const
         String LOGIN = "login3";
@@ -87,9 +88,7 @@ public class UsersDAOTest {
         User user = new User();
         user.setLogin(LOGIN);
         user.setPassword(PASSWORD);
-        manager.getTransaction().begin();
         manager.persist(user);
-        manager.getTransaction().commit();
 
         // check
         User found = usersDAO.findUserById(user.getId());
@@ -100,6 +99,7 @@ public class UsersDAOTest {
     }
 
     @Test
+    @Transactional
     public void findUserByLogin() {
         // const
         String LOGIN = "login4";
@@ -109,9 +109,7 @@ public class UsersDAOTest {
         User user = new User();
         user.setLogin(LOGIN);
         user.setPassword(PASSWORD);
-        manager.getTransaction().begin();
         manager.persist(user);
-        manager.getTransaction().commit();
 
         // check
         User found = usersDAO.findUserByLogin(LOGIN);
@@ -122,6 +120,7 @@ public class UsersDAOTest {
     }
 
     @Test
+    @Transactional
     public void setUserName() {
         // const
         String LOGIN = "login5";
@@ -134,9 +133,7 @@ public class UsersDAOTest {
         user.setLogin(LOGIN);
         user.setPassword(PASSWORD);
         user.setName(NAME);
-        manager.getTransaction().begin();
         manager.persist(user);
-        manager.getTransaction().commit();
 
         // check
         User updated = usersDAO.setUserName(user.getId(), NEW_NAME);

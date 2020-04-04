@@ -1,42 +1,48 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:useBean id="form" type="ru.magentasmalltalk.web.viewmodels.RegistrationFormViewModel" scope="request" />
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<jsp:useBean id="data" type="ru.magentasmalltalk.web.viewmodels.RegistrationFormData" scope="request" />
 
 <html>
 <head>
     <title>Register</title>
 </head>
 <body>
-    <form method="post" action="register" enctype="application/x-www-form-urlencoded">
+<%--@elvariable id="form" type="ru.magentasmalltalk.web.viewmodels.RegistrationFormViewModel"--%>
+    <form:form modelAttribute="form" method="post" action="register" enctype="application/x-www-form-urlencoded">
         <p>
             <label>
                 Login:
-                <input type="text" name="login" value="${form.login}" />
+                <form:input type="text" path="login" />
             </label>
+            <form:errors path="login" cssStyle="color: red;" />
         </p>
         <p>
             <label>
                 Password:
-                <input type="password" name="password" value="${form.password}" />
+                <form:input type="password" path="password" />
             </label>
+            <form:errors path="password" cssStyle="color: red;" />
         </p>
         <p>
             <label>
                 Name:
-                <input type="text" name="name" value="${form.name}" />
+                <form:input type="text" path="name" />
             </label>
+            <form:errors path="name" cssStyle="color: red;" />
         </p>
         <p>
             <label>
                 Role:
-                <select name="role">
-                    <c:forEach items="${form.userRoles}" var="userRole">
+                <form:select path="selectedUserRole">
+                    <c:forEach items="${data.userRoles}" var="userRole">
                         <option value="${userRole}" selected="${userRole == form.selectedUserRole ? "selected" : ""}">${userRole}</option>
                     </c:forEach>
-                </select>
+                </form:select>
             </label>
+            <form:errors path="selectedUserRole" cssStyle="color: red;" />
         </p>
         <input type="submit" value="Register" />
-    </form>
+    </form:form>
 </body>
 </html>

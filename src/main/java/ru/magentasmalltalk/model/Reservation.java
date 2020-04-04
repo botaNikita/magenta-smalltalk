@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Entity
-@Table(name = "reservations")
+@Table
 public class Reservation {
     @Id
     @GeneratedValue

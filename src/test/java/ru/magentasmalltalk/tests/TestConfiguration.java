@@ -4,11 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import ru.magentasmalltalk.web.configurations.ProdConfiguration;
 import ru.magentasmalltalk.web.configurations.WebConfiguration;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 @Configuration
 @ComponentScan(basePackages = { "ru.magentasmalltalk.web", "ru.magentasmalltalk.db" },
@@ -16,7 +14,9 @@ import javax.persistence.Persistence;
                         classes = { ProdConfiguration.class, WebConfiguration.class}))
 public class TestConfiguration {
     @Bean
-    public EntityManagerFactory getEntityManagerFactory() {
-        return Persistence.createEntityManagerFactory("TestPersistenceUnit");
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
+        bean.setPersistenceUnitName("TestPersistenceUnit");
+        return bean;
     }
 }
