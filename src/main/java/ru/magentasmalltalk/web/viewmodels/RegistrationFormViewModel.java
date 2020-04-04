@@ -3,12 +3,30 @@ package ru.magentasmalltalk.web.viewmodels;
 import ru.magentasmalltalk.model.UserRoles;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RegistrationFormViewModel {
     private String login;
     private String password;
     private String name;
     private List<UserRoles> userRoles;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RegistrationFormViewModel that = (RegistrationFormViewModel) o;
+        return Objects.equals(getLogin(), that.getLogin()) &&
+                Objects.equals(getPassword(), that.getPassword()) &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getUserRoles(), that.getUserRoles()) &&
+                getSelectedUserRole() == that.getSelectedUserRole();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLogin(), getPassword(), getName(), getUserRoles(), getSelectedUserRole());
+    }
 
     private UserRoles selectedUserRole;
 
