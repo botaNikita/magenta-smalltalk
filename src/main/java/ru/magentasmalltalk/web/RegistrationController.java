@@ -68,11 +68,11 @@ public class RegistrationController {
             return "redirect:/";
         }
 
+        modelMap.addAttribute("data", createData());
+
         if (validationResult.hasErrors()) {
             return "users/register";
         }
-
-        modelMap.addAttribute("data", createData());
 
         if (form.getLogin() != null && form.getPassword() != null) {
 
