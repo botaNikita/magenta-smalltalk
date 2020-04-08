@@ -1,10 +1,7 @@
 package ru.magentasmalltalk.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.List;
 
@@ -21,12 +18,16 @@ public class Seminar {
     private Date date;
 
     @Column(nullable = false)
+    @Size(max = 100, message = "Length of a topic field should be maximum 100 chars.")
+    @Pattern(regexp = "[a-zA-Z-_.,!?:;'\"0-9]*", message = "Topic should consist of latin letters, digits and symbols -_.,!?:;'\" .")
     private String topic;
 
     @Column
+    @Size(max = 1000, message = "Length of a topic field should be maximum 1000 chars.")
     private String description;
 
-    @Column
+    @Column(nullable = false)
+    @Size(max = 50, message = "Length of a topic field should be maximum 50 chars.")
     private String auditory;
 
     @Column

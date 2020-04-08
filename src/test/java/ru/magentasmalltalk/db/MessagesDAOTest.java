@@ -1,58 +1,56 @@
 package ru.magentasmalltalk.db;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.magentasmalltalk.model.Message;
 import ru.magentasmalltalk.model.User;
+import ru.magentasmalltalk.TestConfiguration;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfiguration.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class MessagesDAOTest {
-    private EntityManagerFactory factory;
+
+    @PersistenceContext
     private EntityManager manager;
+
+    @Autowired
     private MessagesDAO messagesDAO;
 
-    @Before
-    public void setUp() {
-        factory = Persistence.createEntityManagerFactory("TestPersistenceUnit");
-        manager = factory.createEntityManager();
-        messagesDAO = new MessagesDAO(manager);
-    }
-
-    @After
-    public void tearDown() {
-        if (manager != null) {
-            manager.close();
-        }
-        if (factory != null) {
-            factory.close();
-        }
-    }
-
     @Test
+    @Transactional
     public void sendMessage() {
         // data preparation
         String TEXT = "text1";
         User user1 = new User();
         user1.setLogin("login1");
         user1.setPassword("password1");
+        user1.setName("name1");
         User user2 = new User();
         user2.setLogin("login2");
         user2.setPassword("password2");
-        manager.getTransaction().begin();
+        user2.setName("name2");
+        User user3 = new User();
+        user3.setLogin("login3");
+        user3.setPassword("password3");
+        user3.setName("name3");
         manager.persist(user1);
         manager.persist(user2);
-        manager.getTransaction().commit();
 
         // check properties of returned object
-        LinkedList<User> users = new LinkedList();
+        List<User> users = new LinkedList();
         users.add(user1);
         users.add(user2);
         Message message = messagesDAO.sendMessage(TEXT, users);
@@ -70,10 +68,10 @@ public class MessagesDAOTest {
         // check that the entity is saved in DB
         Message found = manager.find(Message.class, message.getId());
         assertNotNull(found);
-        manager.refresh(found);
     }
 
     @Test
+    @Transactional
     public void findMessagesByUserId() {
         String TEXT_1 = "text1";
         String TEXT_2 = "text2";
@@ -81,17 +79,20 @@ public class MessagesDAOTest {
         User user1 = new User();
         user1.setLogin("login1");
         user1.setPassword("password1");
+        user1.setName("name1");
         User user2 = new User();
         user2.setLogin("login2");
         user2.setPassword("password2");
+        user2.setName("name2");
         User user3 = new User();
         user3.setLogin("login3");
         user3.setPassword("password3");
+        user3.setName("name3");
 
-        LinkedList<User> users1 = new LinkedList();
+        List<User> users1 = new LinkedList();
         users1.add(user1);
         users1.add(user2);
-        LinkedList<User> users2 = new LinkedList();
+        List<User> users2 = new LinkedList();
         users2.add(user1);
         users2.add(user3);
 
@@ -102,13 +103,11 @@ public class MessagesDAOTest {
         message2.setText(TEXT_2);
         message2.setUsers(users2);
 
-        manager.getTransaction().begin();
         manager.persist(user1);
         manager.persist(user2);
         manager.persist(user3);
         manager.persist(message1);
         manager.persist(message2);
-        manager.getTransaction().commit();
 
         // check
         List<Message> found = messagesDAO.findMessagesByUserId(user1.getId());

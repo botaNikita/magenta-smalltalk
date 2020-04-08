@@ -1,51 +1,52 @@
 package ru.magentasmalltalk.db;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import ru.magentasmalltalk.model.*;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+import ru.magentasmalltalk.model.Reservation;
+import ru.magentasmalltalk.model.ReservationStatus;
+import ru.magentasmalltalk.model.Seminar;
+import ru.magentasmalltalk.model.User;
+import ru.magentasmalltalk.TestConfiguration;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfiguration.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ReservationsDAOTest {
-    private EntityManagerFactory factory;
+
+    @PersistenceContext
     private EntityManager manager;
+
+    @Autowired
     private ReservationsDAO reservationsDAO;
 
-    @Before
-    public void setUp() {
-        factory = Persistence.createEntityManagerFactory("TestPersistenceUnit");
-        manager = factory.createEntityManager();
-        reservationsDAO = new ReservationsDAO(manager);
-    }
-
-    @After
-    public void tearDown() {
-        if (manager != null) {
-            manager.close();
-        }
-        if (factory != null) {
-            factory.close();
-        }
-    }
-
     @Test
+    @Transactional
     public void createReservation() {
         // data preparation
         User user = new User();
-        user.setLogin("test login");
-        user.setPassword("test password");
+        user.setLogin("testlogin");
+        user.setPassword("testpassword");
+        user.setName("testname");
         Seminar seminar = new Seminar();
-        seminar.setTopic("test topic");
-        manager.getTransaction().begin();
+        seminar.setDate(new Date(2020, Calendar.JULY, 12));
+        seminar.setTopic("testtopic");
+        seminar.setAuditory("testauditory");
+        seminar.setPlacesNumber(15);
         manager.persist(user);
         manager.persist(seminar);
-        manager.getTransaction().commit();
 
         // check properties of returned object
         Reservation reservation = reservationsDAO.createReservation(seminar, user);
@@ -61,26 +62,28 @@ public class ReservationsDAOTest {
         // check that the entity is saved in DB
         Reservation found = manager.find(Reservation.class, reservation.getId());
         assertNotNull(found);
-        manager.refresh(found);
     }
 
     @Test
+    @Transactional
     public void removeReservation() {
         // const
         User user = new User();
-        user.setLogin("test login 2");
-        user.setPassword("test password 2");
+        user.setLogin("testlogin");
+        user.setPassword("testpassword");
+        user.setName("testname");
         Seminar seminar = new Seminar();
-        seminar.setTopic("test topic 2");
+        seminar.setDate(new Date(2020, Calendar.JULY, 12));
+        seminar.setTopic("testtopic");
+        seminar.setAuditory("testauditory");
+        seminar.setPlacesNumber(15);
         Reservation reservation = new Reservation();
         reservation.setSeminar(seminar);
         reservation.setUser(user);
         reservation.setStatus(ReservationStatus.CREATED);
-        manager.getTransaction().begin();
         manager.persist(user);
         manager.persist(seminar);
         manager.persist(reservation);
-        manager.getTransaction().commit();
 
         // action
         reservationsDAO.removeReservation(reservation.getId());
@@ -88,7 +91,6 @@ public class ReservationsDAOTest {
         // check
         Reservation removed = manager.find(Reservation.class, reservation.getId());
         assertNotNull(removed);
-        manager.refresh(removed);
         assertNotNull(removed.getUser());
         assertEquals(user.getId(), removed.getUser().getId());
         assertNotNull(removed.getSeminar());
@@ -97,22 +99,25 @@ public class ReservationsDAOTest {
     }
 
     @Test
+    @Transactional
     public void findReservationById() {
         // data preparation
         User user = new User();
-        user.setLogin("test login 3");
-        user.setPassword("test password 3");
+        user.setLogin("testlogin");
+        user.setPassword("testpassword");
+        user.setName("testname");
         Seminar seminar = new Seminar();
-        seminar.setTopic("test topic 3");
+        seminar.setDate(new Date(2020, Calendar.JULY, 12));
+        seminar.setTopic("testtopic");
+        seminar.setAuditory("testauditory");
+        seminar.setPlacesNumber(15);
         Reservation reservation = new Reservation();
         reservation.setSeminar(seminar);
         reservation.setUser(user);
         reservation.setStatus(ReservationStatus.CREATED);
-        manager.getTransaction().begin();
         manager.persist(user);
         manager.persist(seminar);
         manager.persist(reservation);
-        manager.getTransaction().commit();
 
         // check
         Reservation found = reservationsDAO.findReservationById(reservation.getId());

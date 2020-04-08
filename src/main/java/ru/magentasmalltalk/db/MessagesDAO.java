@@ -1,28 +1,35 @@
 package ru.magentasmalltalk.db;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sun.istack.Nullable;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.magentasmalltalk.model.Message;
 import ru.magentasmalltalk.model.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
 
-public class MessagesDAO extends BaseDAO<Message> {
+@Repository
+public class MessagesDAO {
 
-    @Autowired
-    public MessagesDAO(EntityManager manager) {
-        super(manager);
-    }
+    @PersistenceContext
+    protected EntityManager manager;
 
+    @Transactional
     public Message sendMessage(String text, List<User> users) {
         Message message = new Message();
         message.setText(text);
         message.setUsers(users);
         message.setDate(new Date());
-        return persist(message);
+
+        manager.persist(message);
+
+        return message;
     }
 
+    @Nullable
     public List<Message> findMessagesByUserId(int id) {
         return manager.createQuery("select m from Message m join m.users u where u.id = :id", Message.class)
                 .setParameter("id", id)

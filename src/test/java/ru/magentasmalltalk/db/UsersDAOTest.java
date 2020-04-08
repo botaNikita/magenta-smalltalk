@@ -1,8 +1,5 @@
 package ru.magentasmalltalk.db;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +9,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.model.UserRoles;
-import ru.magentasmalltalk.tests.TestConfiguration;
+import ru.magentasmalltalk.TestConfiguration;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 import static org.junit.Assert.*;
@@ -26,11 +21,11 @@ import static org.junit.Assert.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UsersDAOTest {
 
-    @Autowired
-    private UsersDAO usersDAO;
-
     @PersistenceContext
     private EntityManager manager;
+
+    @Autowired
+    private UsersDAO usersDAO;
 
     @Test
     @Transactional
@@ -51,7 +46,6 @@ public class UsersDAOTest {
         // check that the entity is saved in DB
         User found = manager.find(User.class, user.getId());
         assertNotNull(found);
-        manager.refresh(found);
     }
 
     @Test
@@ -83,11 +77,13 @@ public class UsersDAOTest {
         // const
         String LOGIN = "login3";
         String PASSWORD = "password3";
+        String NAME = "name3";
 
         // data preparation
         User user = new User();
         user.setLogin(LOGIN);
         user.setPassword(PASSWORD);
+        user.setName(NAME);
         manager.persist(user);
 
         // check
@@ -104,11 +100,13 @@ public class UsersDAOTest {
         // const
         String LOGIN = "login4";
         String PASSWORD = "password4";
+        String NAME = "name4";
 
         // data preparation
         User user = new User();
         user.setLogin(LOGIN);
         user.setPassword(PASSWORD);
+        user.setName(NAME);
         manager.persist(user);
 
         // check

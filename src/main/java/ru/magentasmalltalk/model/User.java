@@ -22,7 +22,9 @@ public class User {
     @Pattern(regexp = "[a-zA-Z-_.0-9]*", message = "Password should consist of latin letters, digits, underscores, hyphens and dots.")
     private String password;
 
-    @Column
+    @Column(nullable = false)
+    @Size(min = 4, message = "Length of a name should be minimum 4 chars.")
+    @Pattern(regexp = "[a-zA-Z-_.0-9]*", message = "Name should consist of latin letters, digits, underscores, hyphens and dots.")
     private String name;
 
     @Enumerated(EnumType.STRING)

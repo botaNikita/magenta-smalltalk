@@ -1,6 +1,7 @@
 package ru.magentasmalltalk.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class Message {
     private int id;
 
     @Column
+    @Size(max = 1000, message = "Message length shouldn't exceed 1000 chars")
     private String text;
 
     @Column

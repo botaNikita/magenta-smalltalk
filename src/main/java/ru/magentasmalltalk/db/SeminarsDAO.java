@@ -1,30 +1,37 @@
 package ru.magentasmalltalk.db;
 
 import com.sun.istack.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.magentasmalltalk.model.Seminar;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.Objects;
 
-public class SeminarsDAO extends BaseDAO<Seminar> {
+@Repository
+public class SeminarsDAO {
 
-    @Autowired
-    public SeminarsDAO(EntityManager manager) {
-        super(manager);
-    }
+    @PersistenceContext
+    protected EntityManager manager;
 
-    public Seminar createSeminar(Date date, String topic, String description, String place) {
+    @Transactional
+    public Seminar createSeminar(Date date, String topic, String description, String auditory, int placesNumber) {
         Seminar seminar = new Seminar();
         seminar.setDate(date);
         seminar.setTopic(topic);
         seminar.setDescription(description);
-        seminar.setAuditory(place);
-        return persist(seminar);
+        seminar.setAuditory(auditory);
+        seminar.setPlacesNumber(placesNumber);
+
+        manager.persist(seminar);
+
+        return seminar;
     }
 
+    @Transactional
     public Seminar updateSeminar(Seminar newSeminar) {
         Objects.requireNonNull(newSeminar, "Seminar for update can't be null");
 
@@ -36,8 +43,11 @@ public class SeminarsDAO extends BaseDAO<Seminar> {
         seminar.setTopic(newSeminar.getTopic());
         seminar.setDescription(newSeminar.getDescription());
         seminar.setAuditory(newSeminar.getAuditory());
+        seminar.setPlacesNumber(newSeminar.getPlacesNumber());
 
-        return persist(seminar);
+        manager.persist(seminar);
+
+        return seminar;
     }
 
     @Nullable
