@@ -1,24 +1,29 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <html>
 <head>
     <title>Login</title>
 </head>
 <body>
-    <form method="post" action="login" enctype="application/x-www-form-urlencoded">
+    <%--@elvariable id="form" type="ru.magentasmalltalk.web.viewmodels.LoginFormViewModel"--%>
+    <form:form modelAttribute="form" method="post" action="login" enctype="application/x-www-form-urlencoded">
         <p>
             <label>
                 Login:
-                <input type="text" name="login" value="${param['login']}" />
+                <form:input type="text" path="login" />
             </label>
+            <form:errors path="login" cssStyle="color: red;" />
         </p>
         <p>
             <label>
                 Password:
-                <input type="password" name="password" />
+                <form:input type="password" path="password" />
             </label>
+            <form:errors path="password" cssStyle="color: red;" />
         </p>
         <input type="submit" value="Login" />
-    </form>
+    </form:form>
     <a href="register" >Register</a>
 </body>
 </html>

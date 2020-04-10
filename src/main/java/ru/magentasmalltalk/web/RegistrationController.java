@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.magentasmalltalk.db.UsersDAO;
 import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.model.UserRoles;
@@ -70,34 +69,29 @@ public class RegistrationController {
 
         modelMap.addAttribute("data", createData());
 
+        if (validationResult.hasErrors() || form.getLogin().isEmpty() || form.getPassword().isEmpty() || form.getName().isEmpty()) {
+            return "users/register";
+        }
+
+        User user = null;
+        try {
+            user = usersDAO.createUser(form.getLogin(), form.getPassword(), form.getName(), form.getSelectedUserRole());
+        } catch (Throwable cause) {
+            validationResult.addError(new FieldError("form", "login", "User with login " + form.getLogin() + " found"));
+        }
+
+        if (user == null) {
+            validationResult.addError(new FieldError("form", "login", "Can not create user"));
+        }
+
         if (validationResult.hasErrors()) {
             return "users/register";
         }
 
-        if (form.getLogin() != null && form.getPassword() != null) {
-
-            User user = null;
-            try {
-                user = usersDAO.createUser(form.getLogin(), form.getPassword(), form.getName(), form.getSelectedUserRole());
-            } catch (Throwable cause) {
-                validationResult.addError(new FieldError("form", "login", "User with login " + form.getLogin() + " found"));
-            }
-
-            if (user == null) {
-                validationResult.addError(new FieldError("form", "login", "Can not create user"));
-            }
-
-            if (validationResult.hasErrors()) {
-                return "users/register";
-            }
-
-            session.setAttribute("userName", user.getName());
-            session.setAttribute("userId", user.getId());
-            session.setAttribute("isAdmin", user.getRole() == UserRoles.ADMIN);
-            return "redirect:/";
-        }
-
-        return "users/register";
+        session.setAttribute("userName", user.getName());
+        session.setAttribute("userId", user.getId());
+        session.setAttribute("isAdmin", user.getRole() == UserRoles.ADMIN);
+        return "redirect:/";
     }
 }
 

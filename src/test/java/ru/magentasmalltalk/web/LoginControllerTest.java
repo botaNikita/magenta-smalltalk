@@ -16,6 +16,7 @@ import ru.magentasmalltalk.TestConfiguration;
 import ru.magentasmalltalk.db.UsersDAO;
 import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.web.configurations.WebConfiguration;
+import ru.magentasmalltalk.web.viewmodels.LoginFormViewModel;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -54,18 +55,23 @@ public class LoginControllerTest {
                         .get("/login")
                         .sessionAttr("userId", "test")
         ).andExpect(status().is3xxRedirection())
-         .andReturn();
+                .andExpect(view().name("redirect:/"))
+                .andExpect(request().sessionAttribute("userId", "test"))
+                .andReturn();
     }
 
     @Test
     public void loginFormValidTest() throws Exception {
         User user = usersDAO.createUser("test-user", "test-password");
 
+        LoginFormViewModel loginFormViewModel = new LoginFormViewModel();
+        loginFormViewModel.setLogin("test-user");
+        loginFormViewModel.setPassword("test-password");
+
         mockMvc.perform(
                 MockMvcRequestBuilders
                         .post("/login")
-                        .param("login", "test-user")
-                        .param("password", "test-password")
+                        .flashAttr("form", loginFormViewModel)
         ).andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"))
                 .andExpect(request().sessionAttribute("userId", user.getId()))
@@ -76,13 +82,16 @@ public class LoginControllerTest {
     public void loginFormInvalidTest() throws Exception {
         User user = usersDAO.createUser("test-user", "test-password");
 
+        LoginFormViewModel loginFormViewModel = new LoginFormViewModel();
+        loginFormViewModel.setLogin("test-user");
+        loginFormViewModel.setPassword("wrong-password");
+
         mockMvc.perform(
                 MockMvcRequestBuilders
                         .post("/login")
-                        .param("login", "test-user")
-                        .param("password", "wrong-password")
-        ).andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:users/login"))
+                        .flashAttr("form", loginFormViewModel)
+        ).andExpect(status().isOk())
+                .andExpect(view().name("users/login"))
                 .andReturn();
     }
 
@@ -90,14 +99,18 @@ public class LoginControllerTest {
     public void loginFormAlreadyLoggedInTest() throws Exception {
         User user = usersDAO.createUser("test-user", "test-password");
 
+        LoginFormViewModel loginFormViewModel = new LoginFormViewModel();
+        loginFormViewModel.setLogin("test-user");
+        loginFormViewModel.setPassword("test-password");
+
         mockMvc.perform(
                 MockMvcRequestBuilders
                         .post("/login")
-                        .param("login", "test-user")
-                        .param("password", "wrong-password")
+                        .flashAttr("form", loginFormViewModel)
                         .sessionAttr("userId", "test")
         ).andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"))
+                .andExpect(request().sessionAttribute("userId", "test"))
                 .andReturn();
     }
 }

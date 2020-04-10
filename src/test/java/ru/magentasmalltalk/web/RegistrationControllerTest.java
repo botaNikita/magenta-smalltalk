@@ -39,7 +39,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    public void registrationFormTest() throws Exception {
+    public void registrationFormViewTest() throws Exception {
         RegistrationFormViewModel registrationFormViewModel = new RegistrationFormViewModel();
         registrationFormViewModel.setLogin("");
         registrationFormViewModel.setPassword("");
@@ -47,10 +47,111 @@ public class RegistrationControllerTest {
         registrationFormViewModel.setSelectedUserRole(UserRoles.USER);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/register")
+                MockMvcRequestBuilders
+                        .get("/register")
         ).andExpect(status().isOk())
                 .andExpect(model().attribute("form", registrationFormViewModel))
                 .andExpect(view().name("users/register"))
+                .andReturn();
+    }
+
+    @Test
+    public void registrationFormViewWithSessionTest() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get("/register")
+                        .sessionAttr("userId", "test")
+        ).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"))
+                .andExpect(request().sessionAttribute("userId", "test"))
+                .andReturn();
+    }
+
+    @Test
+    public void registrationFormValidTest() throws Exception {
+        RegistrationFormViewModel registrationFormViewModel = new RegistrationFormViewModel();
+        registrationFormViewModel.setLogin("TestUser");
+        registrationFormViewModel.setPassword("qwerty123");
+        registrationFormViewModel.setName("TestUser");
+        registrationFormViewModel.setSelectedUserRole(UserRoles.USER);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/register")
+                        .flashAttr("form", registrationFormViewModel)
+        ).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"))
+                .andExpect(request().sessionAttribute("userName", "TestUser"))
+                .andReturn();
+    }
+
+    @Test
+    public void registrationFormNoLoginTest() throws Exception {
+        RegistrationFormViewModel registrationFormViewModel = new RegistrationFormViewModel();
+        registrationFormViewModel.setLogin("");
+        registrationFormViewModel.setPassword("qwerty123");
+        registrationFormViewModel.setName("TestUser2");
+        registrationFormViewModel.setSelectedUserRole(UserRoles.USER);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/register")
+                        .flashAttr("form", registrationFormViewModel)
+        ).andExpect(status().isOk())
+                .andExpect(view().name("users/register"))
+                .andReturn();
+    }
+
+    @Test
+    public void registrationFormNoPasswordTest() throws Exception {
+        RegistrationFormViewModel registrationFormViewModel = new RegistrationFormViewModel();
+        registrationFormViewModel.setLogin("TestUser3");
+        registrationFormViewModel.setPassword("");
+        registrationFormViewModel.setName("TestUser3");
+        registrationFormViewModel.setSelectedUserRole(UserRoles.USER);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/register")
+                        .flashAttr("form", registrationFormViewModel)
+        ).andExpect(status().isOk())
+                .andExpect(view().name("users/register"))
+                .andReturn();
+    }
+
+    @Test
+    public void registrationFormNoNameTest() throws Exception {
+        RegistrationFormViewModel registrationFormViewModel = new RegistrationFormViewModel();
+        registrationFormViewModel.setLogin("TestUser4");
+        registrationFormViewModel.setPassword("qwerty123");
+        registrationFormViewModel.setName("");
+        registrationFormViewModel.setSelectedUserRole(UserRoles.USER);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/register")
+                        .flashAttr("form", registrationFormViewModel)
+        ).andExpect(status().isOk())
+                .andExpect(view().name("users/register"))
+                .andReturn();
+    }
+
+    @Test
+    public void registrationFormAlreadyLoggedInTest() throws Exception {
+        RegistrationFormViewModel registrationFormViewModel = new RegistrationFormViewModel();
+        registrationFormViewModel.setLogin("TestUser5");
+        registrationFormViewModel.setPassword("qwerty123");
+        registrationFormViewModel.setName("TestUser5");
+        registrationFormViewModel.setSelectedUserRole(UserRoles.USER);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/register")
+                        .flashAttr("form", registrationFormViewModel)
+                        .sessionAttr("userId", "test")
+        ).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"))
+                .andExpect(request().sessionAttribute("userId", "test"))
                 .andReturn();
     }
 }
