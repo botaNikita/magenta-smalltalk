@@ -50,7 +50,7 @@ public class MessagesDAOTest {
         manager.persist(user2);
 
         // check properties of returned object
-        List<User> users = new LinkedList();
+        LinkedList<User> users = new LinkedList();
         users.add(user1);
         users.add(user2);
         Message message = messagesDAO.sendMessage(TEXT, users);
@@ -68,6 +68,8 @@ public class MessagesDAOTest {
         // check that the entity is saved in DB
         Message found = manager.find(Message.class, message.getId());
         assertNotNull(found);
+
+//        manager.refresh(found);
     }
 
     @Test
@@ -89,10 +91,10 @@ public class MessagesDAOTest {
         user3.setPassword("password3");
         user3.setName("name3");
 
-        List<User> users1 = new LinkedList();
+        LinkedList<User> users1 = new LinkedList();
         users1.add(user1);
         users1.add(user2);
-        List<User> users2 = new LinkedList();
+        LinkedList<User> users2 = new LinkedList();
         users2.add(user1);
         users2.add(user3);
 

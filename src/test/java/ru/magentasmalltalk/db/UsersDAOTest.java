@@ -46,6 +46,8 @@ public class UsersDAOTest {
         // check that the entity is saved in DB
         User found = manager.find(User.class, user.getId());
         assertNotNull(found);
+
+        manager.refresh(found);
     }
 
     @Test

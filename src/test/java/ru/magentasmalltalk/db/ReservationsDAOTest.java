@@ -62,6 +62,8 @@ public class ReservationsDAOTest {
         // check that the entity is saved in DB
         Reservation found = manager.find(Reservation.class, reservation.getId());
         assertNotNull(found);
+
+//        manager.refresh(found);
     }
 
     @Test

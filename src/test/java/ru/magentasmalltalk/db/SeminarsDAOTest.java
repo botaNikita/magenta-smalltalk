@@ -51,6 +51,8 @@ public class SeminarsDAOTest {
         // check that the entity is saved in DB
         Seminar found = manager.find(Seminar.class, seminar.getId());
         assertNotNull(found);
+
+//        manager.refresh(found);
     }
 
     @Test
