@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Repository
@@ -56,6 +57,16 @@ public class SeminarsDAO {
             return manager.createQuery("from Seminar s where s.id = :id", Seminar.class)
                     .setParameter("id", id)
                     .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+
+    @Nullable
+    public List<Seminar> getAllSeminars() {
+        try {
+            return manager.createQuery("from Seminar s order by s.date", Seminar.class)
+                    .getResultList();
         } catch (NoResultException ex) {
             return null;
         }

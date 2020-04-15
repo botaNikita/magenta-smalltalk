@@ -7,13 +7,14 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ru.magentasmalltalk.model.Seminar;
 import ru.magentasmalltalk.TestConfiguration;
+import ru.magentasmalltalk.model.Seminar;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -125,5 +126,45 @@ public class SeminarsDAOTest {
         assertEquals(DESCRIPTION, found.getDescription());
         assertEquals(AUDITORY, found.getAuditory());
         assertEquals(PLACES_NUMBER, found.getPlacesNumber());
+    }
+
+    @Test
+    @Transactional
+    public void getAllSeminars() {
+        // const
+        Date DATE = new Date(2020, Calendar.DECEMBER, 30);
+        String TOPIC = "topic4";
+        String DESCRIPTION = "description4";
+        String AUDITORY = "place4";
+        int PLACES_NUMBER = 15;
+        Date DATE2 = new Date(2020, Calendar.NOVEMBER, 1);
+        String TOPIC2 = "topic5";
+        String DESCRIPTION2 = "description5";
+        String AUDITORY2 = "place5";
+        int PLACES_NUMBER2 = 5;
+
+        // data preparation
+        Seminar seminar = new Seminar();
+        seminar.setDate(DATE);
+        seminar.setTopic(TOPIC);
+        seminar.setDescription(DESCRIPTION);
+        seminar.setAuditory(AUDITORY);
+        seminar.setPlacesNumber(PLACES_NUMBER);
+        manager.persist(seminar);
+
+        Seminar seminar2 = new Seminar();
+        seminar2.setDate(DATE2);
+        seminar2.setTopic(TOPIC2);
+        seminar2.setDescription(DESCRIPTION2);
+        seminar2.setAuditory(AUDITORY2);
+        seminar2.setPlacesNumber(PLACES_NUMBER2);
+        manager.persist(seminar2);
+
+        // check
+        List<Seminar> found = seminarsDAO.getAllSeminars();
+        assertNotNull(found);
+        assertEquals(2, found.size());
+        assertEquals(seminar2.getId(), found.get(0).getId());
+        assertEquals(seminar.getId(), found.get(1).getId());
     }
 }

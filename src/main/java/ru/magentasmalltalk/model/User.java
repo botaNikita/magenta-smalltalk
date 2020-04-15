@@ -1,5 +1,7 @@
 package ru.magentasmalltalk.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -31,6 +33,7 @@ public class User {
     private UserRoles role;
 
     @OneToMany
+    @JsonIgnore
     private List<Reservation> reservations;
 
     public User() { }
