@@ -1,6 +1,7 @@
 package ru.magentasmalltalk.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -8,7 +9,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import ru.magentasmalltalk.db.UsersDAO;
 import ru.magentasmalltalk.model.User;
 import ru.magentasmalltalk.model.UserRoles;
@@ -22,6 +22,9 @@ public class LoginController {
     @Autowired
     private UsersDAO usersDAO;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     @ModelAttribute("form")
     public LoginFormViewModel createLoginFormViewModel() {
         LoginFormViewModel loginFormViewModel = new LoginFormViewModel();
@@ -33,14 +36,14 @@ public class LoginController {
     @GetMapping("/login")
     public String loginPage(@ModelAttribute("form") LoginFormViewModel form,
                             HttpSession session) {
-        if (session.getAttribute("userId") != null) {
-            return "redirect:/";
-        }
+//        if (session.getAttribute("userId") != null) {
+//            return "redirect:/";
+//        }
 
         return "users/login";
     }
 
-    @PostMapping("/login")
+    //@PostMapping("/login")
     public String processLoginForm(@Validated
                                    @ModelAttribute("form") LoginFormViewModel form,
                                    BindingResult validationResult,
@@ -64,7 +67,7 @@ public class LoginController {
 
         if (user == null) {
             validationResult.addError(new FieldError("form", "login", "Can not find user"));
-        } else if (!form.getPassword().equals(user.getPassword())) {
+        } else if (!encoder.matches(form.getPassword(), user.getEncodedPassword())) {
             validationResult.addError(new FieldError("form", "password", "Incorrect password"));
         }
 

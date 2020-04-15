@@ -23,10 +23,10 @@ public class UsersDAO {
     }
 
     @Transactional
-    public User createUser(String login, String password, String name, UserRoles role) {
+    public User createUser(String login, String encodedPassword, String name, UserRoles role) {
         User user = new User();
         user.setLogin(login);
-        user.setPassword(password);
+        user.setEncodedPassword(encodedPassword);
         user.setName(name);
         user.setRole(role);
 

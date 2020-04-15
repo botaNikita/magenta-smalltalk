@@ -38,7 +38,7 @@ public class ReservationsDAOTest {
         // data preparation
         User user = new User();
         user.setLogin("testlogin");
-        user.setPassword("testpassword");
+        user.setEncodedPassword("testpassword");
         user.setName("testname");
         Seminar seminar = new Seminar();
         seminar.setDate(new Date(2020, Calendar.JULY, 12));
@@ -72,7 +72,7 @@ public class ReservationsDAOTest {
         // const
         User user = new User();
         user.setLogin("testlogin");
-        user.setPassword("testpassword");
+        user.setEncodedPassword("testpassword");
         user.setName("testname");
         Seminar seminar = new Seminar();
         seminar.setDate(new Date(2020, Calendar.JULY, 12));
@@ -106,7 +106,7 @@ public class ReservationsDAOTest {
         // data preparation
         User user = new User();
         user.setLogin("testlogin");
-        user.setPassword("testpassword");
+        user.setEncodedPassword("testpassword");
         user.setName("testname");
         Seminar seminar = new Seminar();
         seminar.setDate(new Date(2020, Calendar.JULY, 12));

@@ -36,15 +36,15 @@ public class MessagesDAOTest {
         String TEXT = "text1";
         User user1 = new User();
         user1.setLogin("login1");
-        user1.setPassword("password1");
+        user1.setEncodedPassword("password1");
         user1.setName("name1");
         User user2 = new User();
         user2.setLogin("login2");
-        user2.setPassword("password2");
+        user2.setEncodedPassword("password2");
         user2.setName("name2");
         User user3 = new User();
         user3.setLogin("login3");
-        user3.setPassword("password3");
+        user3.setEncodedPassword("password3");
         user3.setName("name3");
         manager.persist(user1);
         manager.persist(user2);
@@ -80,15 +80,15 @@ public class MessagesDAOTest {
 
         User user1 = new User();
         user1.setLogin("login1");
-        user1.setPassword("password1");
+        user1.setEncodedPassword("password1");
         user1.setName("name1");
         User user2 = new User();
         user2.setLogin("login2");
-        user2.setPassword("password2");
+        user2.setEncodedPassword("password2");
         user2.setName("name2");
         User user3 = new User();
         user3.setLogin("login3");
-        user3.setPassword("password3");
+        user3.setEncodedPassword("password3");
         user3.setName("name3");
 
         LinkedList<User> users1 = new LinkedList();

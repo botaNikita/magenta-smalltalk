@@ -38,7 +38,7 @@ public class UsersDAOTest {
         User user = usersDAO.createUser(LOGIN, PASSWORD);
         assertNotNull(user);
         assertEquals(LOGIN, user.getLogin());
-        assertEquals(PASSWORD, user.getPassword());
+        assertEquals(PASSWORD, user.getEncodedPassword());
         assertEquals(LOGIN, user.getName());
         assertEquals(UserRoles.USER, user.getRole());
         assertNotEquals(0, user.getId());
@@ -62,7 +62,7 @@ public class UsersDAOTest {
         User user = usersDAO.createUser(LOGIN, PASSWORD, NAME, UserRoles.ADMIN);
         assertNotNull(user);
         assertEquals(LOGIN, user.getLogin());
-        assertEquals(PASSWORD, user.getPassword());
+        assertEquals(PASSWORD, user.getEncodedPassword());
         assertEquals(NAME, user.getName());
         assertEquals(UserRoles.ADMIN, user.getRole());
         assertNotEquals(0, user.getId());
@@ -84,7 +84,7 @@ public class UsersDAOTest {
         // data preparation
         User user = new User();
         user.setLogin(LOGIN);
-        user.setPassword(PASSWORD);
+        user.setEncodedPassword(PASSWORD);
         user.setName(NAME);
         manager.persist(user);
 
@@ -93,7 +93,7 @@ public class UsersDAOTest {
         assertNotNull(found);
         assertEquals(user.getId(), found.getId());
         assertEquals(LOGIN, found.getLogin());
-        assertEquals(PASSWORD, found.getPassword());
+        assertEquals(PASSWORD, found.getEncodedPassword());
     }
 
     @Test
@@ -107,7 +107,7 @@ public class UsersDAOTest {
         // data preparation
         User user = new User();
         user.setLogin(LOGIN);
-        user.setPassword(PASSWORD);
+        user.setEncodedPassword(PASSWORD);
         user.setName(NAME);
         manager.persist(user);
 
@@ -116,7 +116,7 @@ public class UsersDAOTest {
         assertNotNull(found);
         assertEquals(user.getId(), found.getId());
         assertEquals(LOGIN, found.getLogin());
-        assertEquals(PASSWORD, found.getPassword());
+        assertEquals(PASSWORD, found.getEncodedPassword());
     }
 
     @Test
@@ -131,7 +131,7 @@ public class UsersDAOTest {
         // data preparation
         User user = new User();
         user.setLogin(LOGIN);
-        user.setPassword(PASSWORD);
+        user.setEncodedPassword(PASSWORD);
         user.setName(NAME);
         manager.persist(user);
 
@@ -140,7 +140,7 @@ public class UsersDAOTest {
         assertNotNull(updated);
         assertEquals(user.getId(), updated.getId());
         assertEquals(LOGIN, updated.getLogin());
-        assertEquals(PASSWORD, updated.getPassword());
+        assertEquals(PASSWORD, updated.getEncodedPassword());
         assertEquals(NEW_NAME, updated.getName());
     }
 }

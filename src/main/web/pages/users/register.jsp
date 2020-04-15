@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <jsp:useBean id="data" type="ru.magentasmalltalk.web.viewmodels.RegistrationFormData" scope="request" />
 
 <html>
@@ -10,6 +11,7 @@
 <body>
 <%--@elvariable id="form" type="ru.magentasmalltalk.web.viewmodels.RegistrationFormViewModel"--%>
     <form:form modelAttribute="form" method="post" action="register" enctype="application/x-www-form-urlencoded">
+        <security:csrfInput/>
         <p>
             <label>
                 Login:

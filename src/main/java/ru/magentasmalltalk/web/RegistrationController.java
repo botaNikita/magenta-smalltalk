@@ -1,6 +1,7 @@
 package ru.magentasmalltalk.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -24,6 +25,9 @@ public class RegistrationController {
 
     @Autowired
     private UsersDAO usersDAO;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     @ModelAttribute("form")
     public RegistrationFormViewModel createRegistrationFormViewModel() {
@@ -74,8 +78,9 @@ public class RegistrationController {
         }
 
         User user = null;
+        String encodedPassword = encoder.encode(form.getPassword());
         try {
-            user = usersDAO.createUser(form.getLogin(), form.getPassword(), form.getName(), form.getSelectedUserRole());
+            user = usersDAO.createUser(form.getLogin(), encodedPassword, form.getName(), form.getSelectedUserRole());
         } catch (Throwable cause) {
             validationResult.addError(new FieldError("form", "login", "User with login " + form.getLogin() + " found"));
         }

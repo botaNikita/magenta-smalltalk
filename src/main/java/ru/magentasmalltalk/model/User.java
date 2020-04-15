@@ -20,9 +20,9 @@ public class User {
     private String login;
 
     @Column(nullable = false)
-    @Size(min = 6, message = "Password length should be minimum 6.")
-    @Pattern(regexp = "[a-zA-Z-_.0-9]*", message = "Password should consist of latin letters, digits, underscores, hyphens and dots.")
-    private String password;
+//    @Size(min = 6, message = "Password length should be minimum 6.")
+//    @Pattern(regexp = "[a-zA-Z-_.0-9]*", message = "Password should consist of latin letters, digits, underscores, hyphens and dots.")
+    private String encodedPassword;
 
     @Column(nullable = false)
     @Size(min = 4, message = "Length of a name should be minimum 4 chars.")
@@ -54,12 +54,12 @@ public class User {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEncodedPassword() {
+        return encodedPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEncodedPassword(String password) {
+        this.encodedPassword = password;
     }
 
     public String getName() {

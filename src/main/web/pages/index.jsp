@@ -5,12 +5,12 @@
 <html>
   <head>
     <title>Index</title>
-    <script type="text/javascript" src="scripts/index.js"></script>
+    <script type="text/javascript" src="../scripts/index.js"></script>
   </head>
   <body onload="loadUsers()">
   <c:choose>
-    <c:when test="${not empty sessionScope['userId']}">
-      <h1>Hello, ${sessionScope['userName']}</h1>
+    <c:when test="${not empty username}">
+      <h1>Hello, ${username}</h1>
       <a href="logout">Logout</a>
     </c:when>
     <c:otherwise>
