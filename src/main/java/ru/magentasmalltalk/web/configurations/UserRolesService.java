@@ -1,4 +1,4 @@
-package ru.magentasmalltalk.web;
+package ru.magentasmalltalk.web.configurations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

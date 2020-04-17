@@ -1,4 +1,4 @@
-package ru.magentasmalltalk.web;
+package ru.magentasmalltalk.web.configurations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -24,7 +24,7 @@ public class StartupListener {
     public void applicationStarted(ContextRefreshedEvent event) {
         User user = usersDAO.findUserByLogin("admin");
         if (user == null) {
-            usersDAO.createUser("admin", encoder.encode("admin"), "Admin", UserRoles.ADMIN);
+            usersDAO.createUser("admin", encoder.encode("admin123"), "Admin", UserRoles.ADMIN);
         }
     }
 }

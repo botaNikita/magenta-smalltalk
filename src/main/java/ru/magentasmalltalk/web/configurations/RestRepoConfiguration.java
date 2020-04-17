@@ -1,4 +1,4 @@
-package ru.magentasmalltalk.web;
+package ru.magentasmalltalk.web.configurations;
 
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;

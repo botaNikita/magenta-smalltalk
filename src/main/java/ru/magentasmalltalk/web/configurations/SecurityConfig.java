@@ -23,17 +23,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/pages/**", "**/*.jsp").denyAll()
-                .antMatchers("/", "/login", "/register", "/scripts/**").permitAll()
+                .antMatchers("/login", "/register", "/scripts/**").permitAll()
+                .antMatchers("/", "/api/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/api/**").authenticated()
+                .antMatchers("/user/**").hasRole("ADMIN")
                 .anyRequest().denyAll();
 
         http.formLogin()
                 .usernameParameter("login")
                 .passwordParameter("password")
                 .loginProcessingUrl("/login")
-                .loginPage("/users/login");
+                .loginPage("/login");
 
         http.csrf();
     }

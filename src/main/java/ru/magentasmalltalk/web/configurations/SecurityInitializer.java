@@ -1,4 +1,4 @@
-package ru.magentasmalltalk.web;
+package ru.magentasmalltalk.web.configurations;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

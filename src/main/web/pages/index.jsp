@@ -5,7 +5,7 @@
 <html>
   <head>
     <title>Index</title>
-    <script type="text/javascript" src="../scripts/index.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
   </head>
   <body onload="loadUsers()">
   <c:choose>
