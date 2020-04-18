@@ -15,6 +15,7 @@ import ru.magentasmalltalk.model.UserRoles;
 import ru.magentasmalltalk.web.viewmodels.LoginFormViewModel;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 @Controller
 public class LoginController {
@@ -35,10 +36,11 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginPage(@ModelAttribute("form") LoginFormViewModel form,
-                            HttpSession session) {
-//        if (session.getAttribute("userId") != null) {
-//            return "redirect:/";
-//        }
+                            HttpSession session,
+                            Principal principal) {
+        if (principal != null) {
+            return "redirect:/";
+        }
 
         return "users/login";
     }

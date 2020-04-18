@@ -21,5 +21,5 @@ public interface UsersRepository extends PagingAndSortingRepository<User, Intege
     Page<User> findUsersByLoginIsLike(@Param("template") String loginTemplate, Pageable page);
 
     @Query("select u from User u where u.id > :limit")
-    List<User> findUsersWithBigIds(int limit);
+    List<User> findUsersWithBigIds(@Param("limit") int limit);
 }

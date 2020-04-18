@@ -17,6 +17,7 @@ import ru.magentasmalltalk.web.viewmodels.RegistrationFormData;
 import ru.magentasmalltalk.web.viewmodels.RegistrationFormViewModel;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -51,8 +52,9 @@ public class RegistrationController {
     @GetMapping(path = "/register")
     public String getRegistrationForm(@ModelAttribute("form") RegistrationFormViewModel form,
                                       ModelMap modelMap,
-                                      HttpSession session) {
-        if (session.getAttribute("userId") != null) {
+                                      HttpSession session,
+                                      Principal principal) {
+        if (principal != null) {
             return "redirect:/";
         }
         modelMap.addAttribute("data", createData());
@@ -65,9 +67,10 @@ public class RegistrationController {
             @ModelAttribute("form") RegistrationFormViewModel form,
             BindingResult validationResult,
             ModelMap modelMap,
-            HttpSession session) {
+            HttpSession session,
+            Principal principal) {
 
-        if (session.getAttribute("userId") != null) {
+        if (principal != null) {
             return "redirect:/";
         }
 
@@ -96,7 +99,7 @@ public class RegistrationController {
         session.setAttribute("userName", user.getName());
         session.setAttribute("userId", user.getId());
         session.setAttribute("isAdmin", user.getRole() == UserRoles.ADMIN);
-        return "redirect:/";
+        return "redirect:/login";
     }
 }
 

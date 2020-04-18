@@ -4,6 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -17,6 +20,8 @@ import ru.magentasmalltalk.db.UsersDAO;
 import ru.magentasmalltalk.model.UserRoles;
 import ru.magentasmalltalk.web.configurations.WebConfiguration;
 import ru.magentasmalltalk.web.viewmodels.RegistrationFormViewModel;
+
+import javax.servlet.Filter;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,9 +38,17 @@ public class RegistrationControllerTest {
     @Autowired
     private UsersDAO usersDAO;
 
+    @Autowired
+    @Qualifier("springSecurityFilterChain")
+    private Filter securityFilter;
+
     @Before
     public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .addFilter(securityFilter)
+                .apply(SecurityMockMvcConfigurers.springSecurity())
+                .build();
     }
 
     @Test
@@ -56,14 +69,13 @@ public class RegistrationControllerTest {
     }
 
     @Test
+    @WithMockUser(username="test-user", roles = "USER")
     public void registrationFormViewWithSessionTest() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders
                         .get("/register")
-                        .sessionAttr("userId", "test")
         ).andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"))
-                .andExpect(request().sessionAttribute("userId", "test"))
                 .andReturn();
     }
 
@@ -137,6 +149,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
+    @WithMockUser(username="test-user", roles = "USER")
     public void registrationFormAlreadyLoggedInTest() throws Exception {
         RegistrationFormViewModel registrationFormViewModel = new RegistrationFormViewModel();
         registrationFormViewModel.setLogin("TestUser5");
@@ -148,10 +161,8 @@ public class RegistrationControllerTest {
                 MockMvcRequestBuilders
                         .post("/register")
                         .flashAttr("form", registrationFormViewModel)
-                        .sessionAttr("userId", "test")
         ).andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"))
-                .andExpect(request().sessionAttribute("userId", "test"))
                 .andReturn();
     }
 }
